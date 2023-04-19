@@ -1,31 +1,39 @@
-//  Libraries
+//  Libraries to go to the best travel blog webpage.
 
 Toastify({
-    text:'Welcome everybody. Click here if you want to see the best travel blog ever!',
-    duration:10000,
-    destinaton: 'https://www.google.com/',
-}).showToast()
+    text: 'The best travel blog webpage ever! Click here.',
+    duracion: 10000, 
+    destination: 'https://juan-hidalgo04.github.io/dw_entrega_final-Hidalgo/',
+    newWindow: true,
+}).showToast();
 
-// First, I define the destinations:
+// Getting the destinations from JSON in two different ways. 
 
-// Getting the destination from JSON
-
-let countries = [];
+// Destination for the drop-down list. 
 
 async function destinationPlaces() {
     try {
       const response = await fetch('./destination.json');
-      const data = await response.json();
-      destinationPlace(data)
-      console.log(data);
+      const dataDesti = await response.json();
+      destinationPlace(dataDesti);
+      console.log(dataDesti);
     } catch (error) {
       console.log(error);
     }
   }
-  
+
+  // Destinations from JSON for calculations and info for the country and final calculations. 
+
+  const fetchDestination = async()=>{
+    const countriesJSON = await fetch('./destination.json');
+    const countriesJSON0 = await countriesJSON.json()
+    // console.log(countriesJSON0);
+    return countriesJSON0
+  }
+
+ 
   destinationPlaces();
     
-
 // Creating options in the drop-down lists for destinations. 
 
 function destinationPlace(destinationData) {
@@ -77,6 +85,7 @@ const inputSeason = document.getElementById('season')
 const inputTravelers = document.getElementById('travelers')
 const inputDays = document.getElementById('days')
 const inputDate = document.getElementById('date')
+let final_answer = document.getElementById("final_answer");
 
 
 // Click on Submit. 
@@ -139,12 +148,15 @@ console.log(infoUser1);
 console.log(infoUser1.season);
 
 // verifying country and the season based on the answer. 
-const country0 = countries.find(c => {
-    return c.destination === infoUser1.destination
-})
 
-console.log( );
-console.log(country0.id);
+const createCountry = async(desti1)=> {
+    const dataDesti = await fetchDestination()
+    const country0 = dataDesti.find(c => {
+    return c.destination === desti1.destination
+})
+// console.log(country0);
+return country0
+}
 
 const season0 = seasons.find(s => {
     return s.called === infoUser1.season
@@ -152,60 +164,39 @@ const season0 = seasons.find(s => {
 
 console.log(season0);
 
-// Execute the Fecth with some images for the project
-// I was not able to find a good API for my project. I'll keep looking. 
+const finalFunction = async()=>{
+    const country0 = await createCountry(infoUser1)
+    console.log(country0);
 
-const fetchPlaces = async(id)=>{
-    try {
-        const placesApi = await fetch(`https://rickandmortyapi.com/api/character`)
-        const placesJSON = await placesApi.json()
-        console.log(placesJSON.result);
-        return placesJSON
-    } catch (error) {
-        console.log(error);
-    }
-    return placesJSON
-}
-fetchPlaces()
-
-// Looking for one image for the response
-
-const imagePlaces = async()=>{
-    const country = countries.find((c) => c.destination === infoUser1.destination);
-    const place = await fetchPlaces(country.id)
-    console.log(place);
-    return place
-}
-
-// calcu budget for trip
+    // calcu budget for trip
 const finalFlight = calcu(calcu(country0.flight, season0.value, mult), infoUser1.travelers, mult)
 const finalBudget = calcu(calcu(calcu(country0.budget, season0.value, mult), infoUser1.travelers, mult), infoUser1.days, mult)
 const finalMoney = calcu(finalBudget, finalFlight, sum)
 
 console.log(finalBudget, finalFlight, finalMoney)
 
-
 // Modifying HTML final answer.
-
-let final_answer = document.getElementById("final_answer");
 
 const infoUser = localStorage.getItem('infoUser')
 const infoUserJS = JSON.parse(infoUser)
+console.log(infoUser);
+console.log(infoUserJS);
 if (infoUser) {
     form0.remove()
     finale.remove()
     finale1.remove()
-    final_answer.innerHTML = `<p>Thank you for choosing us, ${infoUser1.name}. Next, you will find the final budget review.</p> <br>
+    final_answer.innerHTML = `<p>Thank you for choosing us, ${infoUserJS.name}. Next, you will find the final budget review.</p> <br>
 
-    <p>To stay ${infoUser1.days} days on ${country0.destination}, ${country0.country} during ${season0.called} for ${infoUser1.travelers} travelers, we recommend a budget of USD ${finalBudget} to cover accommodation, food, and transportation expenses. Also, we estimate that you may need USD ${finalFlight} approx for flight tickets departing from El Dorado - Bogota. </p>
+    <p>To stay ${infoUserJS.days} days on ${country0.destination}, ${country0.country} during ${season0.called} for ${infoUserJS.travelers} travelers, we recommend a budget of USD ${finalBudget} to cover accommodation, food, and transportation expenses. Also, we estimate that you may need USD ${finalFlight} approx for flight tickets departing from El Dorado - Bogota. </p>
     <br>
     <p>The total budget is <b> USD ${finalMoney}.</b></p>
     <br> 
     <p>Moreover, here is some information to have in mind for your trip to ${country0.destination}, ${country0.country}: The estimated time of flight is ${country0.hours} hours, you will arrive to ${country0.airport} and the local currency will be ${country0.currency}.</p>
     <br>
     <p>We hope this information is useful for you.</p>
-    <img class='center justify' src="" alt="${country0.id}">
     `;
-    
 }
+}
+
+finalFunction()
 
