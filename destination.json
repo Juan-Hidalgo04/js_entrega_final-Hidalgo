@@ -1,0 +1,67 @@
+[
+    {
+        "id": 1,
+        "country": "Argentina",
+        "destination": "Buenos Aires",
+        "airport": "Ministro Pistarini International Airport",
+        "hours": 7,
+        "currency": "Argentine Pesos",
+        "flight": 500,
+        "budget": 23
+    },
+
+    {
+        "id": 2,
+        "country": "Brazil",
+        "destination": "São Paulo",
+        "airport": "São Paulo-Guarulhos International Airport",
+        "hours": 5,
+        "currency": "Brazilian Real",
+        "flight": 400,
+        "budget": 25
+    },
+
+    {
+        "id": 3,
+        "country": "Chile",
+        "destination": "Santiago de Chile",
+        "airport": "Santiago International Airport",
+        "hours": 6,
+        "currency": "Chilean Pesos",
+        "flight": 440,
+        "budget": 45
+    },
+
+    {
+        "id": 4,
+        "country": "Mexico",
+        "destination": "Cancun",
+        "airport": "Cancún International Airport",
+        "hours": 4,
+        "currency": "Mexican Pesos",
+        "flight": 350,
+        "budget": 30
+    },
+
+    {
+        "id": 5,
+        "country": "Dominic Republic",
+        "destination": "Punta Cana",
+        "airport": "Punta Cana International Airport",
+        "hours": 4,
+        "currency": "Dominican Pesos",
+        "flight": 380,
+        "budget": 35
+    },
+    
+    {
+        "id": 6,
+        "country": "Ecuador",
+        "destination": "Quito",
+        "airport": "Mariscal Sucre International Airport",
+        "hours": 2,
+        "currency": "US dollars",
+        "flight": 150,
+        "budget": 35
+    }
+]
